@@ -3,17 +3,17 @@
 var tar = require("tar"),
   zlib = require("zlib"),
   path = require("path"),
-  http = require("http"),
+  https = require("https"),
   fs = require("fs"),
   ProgressBar = require("progress"),
   utils = require("./utils");
 
-var download = function(downloadUrl, installPath, callback) {
+var download = function (downloadUrl, installPath, callback) {
   console.log(
     `Started downloading dynamodb-local from ${downloadUrl} into ${installPath}. Process may take few minutes.`
   );
-  http
-    .get(downloadUrl, function(response) {
+  https
+    .get(downloadUrl, function (response) {
       var len = parseInt(response.headers["content-length"], 10),
         bar = new ProgressBar(
           "Downloading dynamodb-local [:bar] :percent :etas",
@@ -21,7 +21,7 @@ var download = function(downloadUrl, installPath, callback) {
             complete: "=",
             incomplete: " ",
             width: 40,
-            total: len
+            total: len,
           }
         );
 
@@ -38,25 +38,25 @@ var download = function(downloadUrl, installPath, callback) {
         .pipe(zlib.Unzip())
         .pipe(
           tar.x({
-            C: installPath
+            C: installPath,
           })
         )
-        .on("data", function(chunk) {
+        .on("data", function (chunk) {
           bar.tick(chunk.length);
         })
-        .on("end", function() {
+        .on("end", function () {
           callback("\n Installation complete!");
         })
-        .on("error", function(err) {
+        .on("error", function (err) {
           throw new Error("Error in downloading Dynamodb local " + err);
         });
     })
-    .on("error", function(err) {
+    .on("error", function (err) {
       throw new Error("Error in downloading Dynamodb local " + err);
     });
 };
 
-var install = function(config, callback) {
+var install = function (config, callback) {
   var install_path = utils.absPath(config.setup.install_path),
     jar = config.setup.jar,
     download_url = config.setup.download_url;

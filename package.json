@@ -1,6 +1,6 @@
 {
-  "name": "dynamodb-localhost",
-  "version": "0.0.9",
+  "name": "@omnipresentgroup/dynamodb-localhost",
+  "version": "0.0.10",
   "engines": {
     "node": ">=4.0"
   },
@@ -9,7 +9,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/99xt/dynamodb-localhost"
+    "url": "https://github.com/OmnipresentGroup/dynamodb-localhost.git"
   },
   "keywords": [
     "aws",
